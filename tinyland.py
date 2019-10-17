@@ -8,6 +8,17 @@ import time
 import context
 import snapshot
 
+import time
+
+from pythonosc import udp_client
+
+localIP     = "127.0.0.1"
+localPort   = 20001
+
+client = udp_client.SimpleUDPClient(localIP, localPort)
+
+
+
 
 def squaritude(c):
   _, _, w, h = cv2.boundingRect(c)
@@ -256,3 +267,5 @@ def run(app):
       # Run the user defined app
       app(snap, ctx)
       r.render(ctx)
+      # client.send_message("x/100/", "nonsense")
+      # client.send_message("y/200/", "nonsense")
