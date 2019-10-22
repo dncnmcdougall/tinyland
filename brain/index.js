@@ -19,20 +19,20 @@ udpServer.on('listening', () => {
 udpServer.bind(udpPort);
 
 app.get('/', function(req, res){
-  console.log('GET')
   res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+  console.log('a browser connected');
   udpServer.on('message', (msgBuffer, rinfo) => {
     const msg = msgBuffer.toString()
     const msgArray = msg.split('/')
-    const [type, x, y] = msgArray
-    console.log(`${type}: ${x} : ${y}`);
+    const [type, name, x, y] = msgArray
+    // console.log(`${type} : ${name} : ${x} : ${y}`);
     if (type === 'rectangle') {
-      io.emit('message', {
+      io.emit('update-thing', {
         type: 'rectangle',
+        name,
         x,
         y,
       });

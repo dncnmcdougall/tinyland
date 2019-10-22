@@ -32,9 +32,10 @@ class Renderer(renderer.Renderer):
         """
         for shape in ctx.shapes:
             if isinstance(shape, context.Rectangle):
-                print("Rectangle at x: {} y: {}".format(shape.center.x, shape.center.y))
-                coords = 'rectangle/{}/{}/'.format(shape.center.x, shape.center.y)
-                client.send_message(coords, 'nonsense')
+                # print("Rectangle at x: {} y: {}".format(shape.center.x, shape.center.y))
+                # coords = 'rectangle/{}/{}/{}/'.format("paddle1", x, y)
+                coords = 'rectangle/{}/{}/{}/'.format(shape.name, shape.center.x, shape.center.y)
+                client.send_message(coords, 'nonsense') # args is nonsense because dumb nodejs can't parse the args arggg.
             # elif isinstance(shape, context.Circle):
             #     print("Circle at x: {} y: {}".format(shape.center.x, shape.center.y))
             # elif isinstance(shape, context.Text):

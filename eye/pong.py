@@ -10,7 +10,8 @@ player2 = None
 ball = None
 
 class Paddle:
-  def __init__(self, x, y, width=40, height=250):
+  def __init__(self, name, x, y, width=40, height=250):
+    self.name = name
     self.x = x
     self.y = y
     self.width = width
@@ -21,7 +22,7 @@ class Paddle:
     self.y = marker.center.y
   
   def render(self, ctx):
-    ctx.rect(self.x, self.y, self.width, self.height)
+    ctx.rect(self.name, self.x, self.y, self.width, self.height)
 
 class Ball:
   def __init__(self, x, y, vx=15, vy=15, size=40):
@@ -36,7 +37,7 @@ class Ball:
     self.y += self.vy
 
   def render(self, ctx):
-    ctx.rect(self.x, self.y, self.size, self.size)
+    ctx.rect("ball", self.x, self.y, self.size, self.size)
 
 def collide_ball():
     if (ball.y >= CONTEXT_HEIGHT - ball.size) or (ball.y <= ball.size): ball.vy = -ball.vy
@@ -74,8 +75,8 @@ def app(snap, ctx):
 
 
 if __name__ == "__main__":
-  player1 = Paddle(200, 10)
-  player2 = Paddle(CONTEXT_WIDTH - 200, 10) # Would be nice have access to projector width here :)
+  player1 = Paddle("paddle1", 200, 10)
+  player2 = Paddle("paddle2", CONTEXT_WIDTH - 200, 10) # Would be nice have access to projector width here :)
 
   ball_vx = random.choice([15, -15])
   ball_vy = random.choice([15, -15])

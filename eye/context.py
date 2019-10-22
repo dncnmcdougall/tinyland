@@ -19,7 +19,8 @@ YELLOW = (0, 255, 255)
 class Shape:
     """Base class for shapes to draw on the landscape."""
 
-    def __init__(self, x, y, color):
+    def __init__(self, name, x, y, color):
+        self.name = name
         self.center = XYPoint(x, y)
         self.color = color
 
@@ -27,14 +28,14 @@ class Shape:
 class Circle(Shape):
 
     def __init__(self, x, y, radius, color):
-        super().__init__(x, y, color)
+        super().__init__("", x, y, color)
         self.radius = radius
 
 
 class Rectangle(Shape):
 
-    def __init__(self, x, y, width, height, rotation, color):
-        super().__init__(x, y, color)
+    def __init__(self, name, x, y, width, height, rotation, color):
+        super().__init__(name, x, y, color)
         self.width = width
         self.height = height
         self.rotation = rotation
@@ -43,14 +44,14 @@ class Rectangle(Shape):
 class Text(Shape):
 
     def __init__(self, x, y, content, color, size):
-        super().__init__(x, y, color)
+        super().__init__("", x, y, color)
         self.content = str(content)
         self.size = size
 
 
 class Image(Shape):
     def __init__(self, filepath, x, y, width, height):
-        super().__init__(x, y, color=BLACK)
+        super().__init__("", x, y, color=BLACK)
         self.width = width
         self.height = height
         self.filepath = filepath
@@ -73,8 +74,8 @@ class DrawingContext:
         self.height = height
         self.shapes = []
 
-    def rect(self, x, y, width, height, rotation=0, color=WHITE):
-        self.shapes.append(Rectangle(x, y, width, height, rotation, color))
+    def rect(self, name, x, y, width, height, rotation=0, color=WHITE):
+        self.shapes.append(Rectangle(name, x, y, width, height, rotation, color))
 
     def circle(self, x, y, radius, color=WHITE):
         self.shapes.append(Circle(x, y, radius, color))

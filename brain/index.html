@@ -8,14 +8,23 @@
       var socket = io();
       const canvas = document.getElementById('canvas');
       const ctx = canvas.getContext('2d');
-      socket.on('message', function(msg){
-        console.log('got a msg:', msg)
-        if (msg && msg.type === 'rectangle') {
-          ctx.fillStyle = 'black';
-          ctx.fillRect(0, 0, 600, 600);
-          ctx.fillStyle = 'pink';
-          ctx.fillRect(msg.x / 2, msg.y / 2, 20, 20);
-        }
+      const things = {}
+      
+      socket.on('update-thing', function(thing) { 
+        things[thing.name] = thing
+        
+        // Clear canvas
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, 600, 600);
+        
+        // Render things
+        Object.keys(things).forEach(key => {
+          const thing = things[key]
+          if (thing.type === 'rectangle') {
+            ctx.fillStyle = 'pink';
+            ctx.fillRect(thing.x / 2, thing.y / 2, 20, 20);
+          }
+        })
       });
     </script>
   </body>
