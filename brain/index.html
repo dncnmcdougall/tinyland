@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <canvas id="canvas" width="600" height="600"></canvas>
+    <canvas id="canvas" width="1366" height="768"></canvas>
     <div id="message"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
       const canvas = document.getElementById('canvas');
       const ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, 1366, 768);
       const things = {}
       
       socket.on('update-thing', function(thing) { 
@@ -15,14 +17,14 @@
         
         // Clear canvas
         ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, 600, 600);
+        ctx.fillRect(0, 0, 1366, 768);
         
         // Render things
         Object.keys(things).forEach(key => {
           const thing = things[key]
           if (thing.type === 'rectangle') {
-            ctx.fillStyle = 'pink';
-            ctx.fillRect(thing.x / 2, thing.y / 2, 20, 20);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(thing.x, thing.y, thing.width, thing.height);
           }
         })
       });

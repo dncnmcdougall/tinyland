@@ -5,6 +5,6 @@ def main(snap, ctx):
   for id, markers in snap.markers.items():
     for marker in markers:
       rectName = 'rect' + str(id)
-      ctx.rect(rectName, marker.center.x, marker.center.y, 150, 150)
+      ctx.rect(rectName, marker.center.x, marker.center.y, 15, 15)
 
 tinyland.run(main)

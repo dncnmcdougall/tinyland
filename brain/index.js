@@ -27,7 +27,7 @@ io.on('connection', function(socket){
   udpServer.on('message', (msgBuffer, rinfo) => {
     const msg = msgBuffer.toString()
     const msgArray = msg.split('/')
-    const [type, name, x, y] = msgArray
+    const [type, name, x, y, width, height] = msgArray
     // console.log(`${type} : ${name} : ${x} : ${y}`);
     if (type === 'rectangle') {
       io.emit('update-thing', {
@@ -35,6 +35,8 @@ io.on('connection', function(socket){
         name,
         x,
         y,
+        width,
+        height,
       });
     }
   });
