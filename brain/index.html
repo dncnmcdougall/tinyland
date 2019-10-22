@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <div id="message"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      socket.on('message', function(msg){
+        console.log('got a msg:', msg)
+        if (msg && msg.type === 'rectangle') {
+          ctx.fillStyle = 'black';
+          ctx.fillRect(0, 0, 600, 600);
+          ctx.fillStyle = 'pink';
+          ctx.fillRect(msg.x / 2, msg.y / 2, 20, 20);
+        }
+      });
+    </script>
+  </body>
+</html>

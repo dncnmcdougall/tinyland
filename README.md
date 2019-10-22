@@ -1,6 +1,21 @@
 # Tinyland
 A very small version of Dynamicland. [For more...](https://www.notion.so/Tinyland-f05733c9b73141c181352f5b5012ce1a)
 
+## Quick start
+Run the camera and an app:
+```
+cd eye
+python3 pong.py
+```
+
+Run the server and browser, which renders Tinyland:
+```
+cd brain
+npm start
+```
+
+Go to http://localhost:3000/
+
 ## Setup
 Install dependencies with `pip3 install -r requirements.txt`.
 
