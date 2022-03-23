@@ -153,10 +153,15 @@ class Landscape:
                 SRC_CORNERS = corners
                 self.projector["SRC_CORNERS"] = corners
                 self.projector["CALIBRATE"] = False
-                self.homography, status = cv2.findHomography(SRC_CORNERS, DEST_CORNERS)
+        self.homography, status = cv2.findHomography(SRC_CORNERS, DEST_CORNERS)
 
+        if self.projector["IDENTIFY_ON_VIDEO"]:
+            print('Identify on frame')
+            snap = snapshot.Snapshot(frame, self.homography, on_image=False)
         image = self.camera_to_projector_space(frame)
-        snap = snapshot.Snapshot(image)
+        if not self.projector["IDENTIFY_ON_VIDEO"]:
+            print('Identify on image')
+            snap = snapshot.Snapshot(image, np.linalg.inv(self.homography), on_image=True)
 
         return snap, image, frame
 
@@ -271,13 +276,15 @@ def run(render_ctx, render_direct):
         snap, image, frame = l.get_snapshot()
 
         if image is not None:
-            debug:Image = np.copy(image)
+            SRC_CORNERS:Corners = np.array(l.projector["SRC_CORNERS"])
+            debug:Image = np.copy(frame)
             items = snap.markers.items()
             if items:
                 markers = [m for i in items for m in i[1]]
                 ids:npt.NDArray[int] = np.array([m.id for m in markers])
-                corners = [m.corners for m in markers]
+                corners = [m.raw_corners for m in markers]
                 cv2.aruco.drawDetectedMarkers(debug, corners, ids)
+            debug = cv2.polylines(debug, pts=[SRC_CORNERS.astype(int)], isClosed=True, color=(255,255,255))
 
             cv2.imshow("Tinycam", debug)
 
