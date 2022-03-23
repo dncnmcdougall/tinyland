@@ -1,2 +1,5 @@
 config.toml
 __pycache__/
+markers/
+win_venv/
+stubs/
