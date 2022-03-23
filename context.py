@@ -1,39 +1,41 @@
 from collections import namedtuple
 
+from typing import List
+
 
 # Convenience class that allows indexing as well as x and y attribute access
 XYPoint = namedtuple("XYPoint", ["x", "y"])
+Size = namedtuple("Size", ["width", "height"])
+Colour = namedtuple("Colour", ["r", "g", "b"])
 
 
 # BGR color values
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-BLUE = (255, 0, 0)
-GREEN = (0, 255, 0)
-RED = (0, 0, 255)
-CYAN = (255, 255, 0)
-MAGENTA = (255, 0, 255)
-YELLOW = (0, 255, 255)
+BLACK = Colour(0, 0, 0)
+WHITE = Colour(255, 255, 255)
+BLUE = Colour(255, 0, 0)
+GREEN = Colour(0, 255, 0)
+RED = Colour(0, 0, 255)
+CYAN = Colour(255, 255, 0)
+MAGENTA = Colour(255, 0, 255)
+YELLOW = Colour(0, 255, 255)
 
 
 class Shape:
     """Base class for shapes to draw on the landscape."""
 
-    def __init__(self, x, y, color):
+    def __init__(self, x:int, y:int, color:Colour):
         self.center = XYPoint(x, y)
         self.color = color
 
 
 class Circle(Shape):
-
-    def __init__(self, x, y, radius, color):
+    def __init__(self, x:int, y:int, radius:int, color:Colour):
         super().__init__(x, y, color)
         self.radius = radius
 
 
 class Rectangle(Shape):
-
-    def __init__(self, x, y, width, height, rotation, color):
+    def __init__(self, x:int, y:int, width:int, height:int, rotation:float, color:Colour):
         super().__init__(x, y, color)
         self.width = width
         self.height = height
@@ -41,8 +43,7 @@ class Rectangle(Shape):
 
 
 class Text(Shape):
-
-    def __init__(self, x, y, content, color, size):
+    def __init__(self, x:int, y:int, content:str, color:Colour, size:Size):
         super().__init__(x, y, color)
         self.content = str(content)
         self.size = size
@@ -68,10 +69,10 @@ class DrawingContext:
         shapes (list<Shape>): shapes to draw
     """
 
-    def __init__(self, width, height):
+    def __init__(self, width:int, height:int):
         self.width = width
         self.height = height
-        self.shapes = []
+        self.shapes:List[Shape] = []
 
     def rect(self, x, y, width, height, rotation=0, color=WHITE):
         self.shapes.append(Rectangle(x, y, width, height, rotation, color))
@@ -84,4 +85,3 @@ class DrawingContext:
 
     def image(self, filepath, x, y, width, height):
         self.shapes.append(Image(filepath, x, y, width, height))
-

@@ -1,10 +1,17 @@
 import cv2.aruco as aruco
 from collections import namedtuple
 import numpy as np
+import numpy.typing as npt
+
+from typing import Dict, List
 
 
 # Convenience class that allows indexing as well as x and y attribute access
 XYPoint = namedtuple("XYPoint", ["x", "y"])
+Image = npt.NDArray[int]
+Corners = npt.NDArray[int]
+
+ArucoDict = aruco.getPredefinedDictionary(aruco.DICT_APRILTAG_36H11)
 
 
 class Marker:
@@ -22,17 +29,16 @@ class Marker:
 
 
 class ArucoMarker(Marker):
-
     def __init__(self, id, tl, tr, br, bl):
         [center_x, center_y] = np.median([np.array(tl), np.array(br)], axis=0)
         super().__init__(center_x, center_y)
-        self.id = id
+        self.id = int(id)
         self.tl = XYPoint(*tl)
         self.tr = XYPoint(*tr)
         self.bl = XYPoint(*bl)
         self.br = XYPoint(*br)
-        self.rotation = np.degrees(np.arctan((self.tl.y - self.bl.y) /
-                                             (self.tl.x - self.bl.x)))
+        self.corners:npt.NDArray[int] = np.array([[tl, tr, br, bl]])
+        self.rotation = np.degrees(np.arctan((self.tl.y - self.bl.y) / (self.tl.x - self.bl.x)))
 
 
 class Snapshot:
@@ -52,13 +58,12 @@ class Snapshot:
         self.image = image
         self.markers = self.detect_aruco()
 
-    def detect_aruco(self):
+    def detect_aruco(self) -> Dict[int, List[ArucoMarker]]:
         # Aruco - Find markers
-        aruco_markers = aruco.detectMarkers(self.image, aruco.Dictionary_get(
-            aruco.DICT_ARUCO_ORIGINAL))
+        aruco_markers = aruco.detectMarkers(self.image, ArucoDict)
         corners = aruco_markers[0]
         ids = aruco_markers[1]
-        m = {}
+        m:Dict[int, List[ArucoMarker]] = {}
         if ids is None:
             return m
         for aruco_id, corner in zip(ids, corners):

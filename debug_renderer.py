@@ -3,13 +3,12 @@ import context
 
 
 class Renderer(renderer.Renderer):
-
     def __init__(self, width, height):
         self.width = width
         self.height = height
 
     def setup(self):
-        print('Running debug renderer.')
+        print("Running debug renderer.")
 
     def toggle_fullscreen(self):
         pass
@@ -34,5 +33,3 @@ class Renderer(renderer.Renderer):
                 print("Text at x: {} y: {} content: {}".format(shape.center.x, shape.center.y, shape.content))
             elif isinstance(shape, context.Image):
                 print("Image at x: {} y: {} content: {}".format(shape.center.x, shape.center.y, shape.filepath))
-            
-            
